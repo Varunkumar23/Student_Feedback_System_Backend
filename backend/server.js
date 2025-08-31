@@ -1,32 +1,34 @@
-import express from 'express';
-import cors from 'cors';
-import connectDB from './config/db.js';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
 
-import courseRoutes from './routes/courseRoute.js';
-import feedbackRoutes from './routes/feedbackRoute.js';
+import courseRoutes from "./routes/courseRoute.js";
+import feedbackRoutes from "./routes/feedbackRoute.js";
 
 const app = express();
 dotenv.config();
 
 connectDB();
 
-
-app.use(cors({
-    origin: '*',
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
     credentials: true,
-}));
+  })
+);
+
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('API is running...');
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
-app.use('/api/courses', courseRoutes);
-app.use('/api/feedback', feedbackRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
